@@ -1,6 +1,4 @@
--- Some extras need to be loaded before others
-local prios = {
-  ["base.test"] = 1,
+local priorities = {
   ["base.dap"] = 1,
   ["lang.typescript"] = 5,
   ["base.prettier"] = 10,
@@ -12,50 +10,50 @@ local prios = {
 -- "lang.ocaml",
 -- "lang.r",
 -- "lang.nix",
-local extras = {
-  -- "lang.angular",
-  -- "lang.ansible",
-  -- "lang.astro",
-  -- "lang.clangd",
-  -- "lang.clojure",
-  -- "lang.cmake",
-  -- "lang.docker",
-  -- "lang.elixir",
-  -- "lang.elm",
-  -- "lang.git",
-  -- "lang.gleam",
-  -- "lang.go",
-  -- "lang.helm",
-  -- "lang.java",
-  -- "lang.json",
-  -- "lang.kotlin",
-  -- "lang.lean",
-  -- "lang.markdown",
-  -- "lang.nushell",
-  -- "lang.omnisharp",
-  -- "lang.php",
-  -- "lang.prisma",
-  -- "lang.python",
-  -- "lang.ruby",
-  -- "lang.rust",
-  -- "lang.scala",
-  -- "lang.sql",
-  -- "lang.svelte",
-  -- "lang.tailwind",
-  -- "lang.terraform",
-  -- "lang.tex",
-  -- "lang.thrift",
-  -- "lang.toml",
-  -- "lang.typescript",
-  -- "lang.vue",
-  -- "lang.yaml",
+local languages = {
+  "lang.angular",
+  "lang.ansible",
+  "lang.astro",
+  "lang.clangd",
+  "lang.clojure",
+  "lang.cmake",
+  "lang.docker",
+  "lang.elixir",
+  "lang.elm",
+  "lang.git",
+  "lang.gleam",
+  "lang.go",
+  "lang.helm",
+  "lang.java",
+  "lang.json",
+  "lang.kotlin",
+  "lang.lean",
+  "lang.markdown",
+  "lang.nushell",
+  "lang.omnisharp",
+  "lang.php",
+  "lang.prisma",
+  "lang.python",
+  "lang.ruby",
+  "lang.rust",
+  "lang.scala",
+  "lang.sql",
+  "lang.svelte",
+  "lang.tailwind",
+  "lang.terraform",
+  "lang.tex",
+  "lang.thrift",
+  "lang.toml",
+  "lang.typescript",
+  "lang.vue",
+  "lang.yaml",
 }
 
 LazyVim.plugin.save_core()
 
-table.sort(extras, function(a, b)
-  local pa = prios[a] or 50
-  local pb = prios[b] or 50
+table.sort(languages, function(a, b)
+  local pa = priorities[a] or 50
+  local pb = priorities[b] or 50
   if pa == pb then
     return a < b
   end
@@ -65,4 +63,4 @@ end)
 ---@param extra string
 return vim.tbl_map(function(extra)
   return { import = extra }
-end, extras)
+end, languages)
