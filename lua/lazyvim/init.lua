@@ -1,6 +1,6 @@
 vim.uv = vim.uv or vim.loop
 
-_G.LazyVim = require("lazyvim.util")
+_G.LazyVim = require("util")
 
 ---@class LazyVimConfig: LazyVimOptions
 local M = {}

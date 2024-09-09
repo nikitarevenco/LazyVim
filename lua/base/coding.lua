@@ -77,7 +77,7 @@ return {
         sorting = defaults.sorting,
       }
     end,
-    main = "lazyvim.util.cmp",
+    main = "util.cmp",
   },
 
   -- snippets

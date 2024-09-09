@@ -1,23 +1,5 @@
 local LazyUtil = require("lazy.core.util")
 
----@class lazyvim.util: LazyUtilCore
----@field config LazyVimConfig
----@field ui lazyvim.util.ui
----@field lsp lazyvim.util.lsp
----@field root lazyvim.util.root
----@field terminal lazyvim.util.terminal
----@field lazygit lazyvim.util.lazygit
----@field toggle lazyvim.util.toggle
----@field format lazyvim.util.format
----@field plugin lazyvim.util.plugin
----@field extras lazyvim.util.extras
----@field inject lazyvim.util.inject
----@field news lazyvim.util.news
----@field json lazyvim.util.json
----@field lualine lazyvim.util.lualine
----@field mini lazyvim.util.mini
----@field pick lazyvim.util.pick
----@field cmp lazyvim.util.cmp
 local M = {}
 
 ---@type table<string, string|string[]>
@@ -45,11 +27,11 @@ setmetatable(M, {
       local key = type(dep) == "table" and dep[2] or k
       M.deprecate([[LazyVim.]] .. k, [[LazyVim.]] .. mod .. "." .. key)
       ---@diagnostic disable-next-line: no-unknown
-      t[mod] = require("lazyvim.util." .. mod) -- load here to prevent loops
+      t[mod] = require("util." .. mod) -- load here to prevent loops
       return t[mod][key]
     end
     ---@diagnostic disable-next-line: no-unknown
-    t[k] = require("lazyvim.util." .. k)
+    t[k] = require("util." .. k)
     return t[k]
   end,
 })
