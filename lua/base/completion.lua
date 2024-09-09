@@ -11,7 +11,7 @@ return {
       "hrsh7th/cmp-path",
     },
     -- Not all LSP servers add brackets when completing a function.
-    -- To better deal with this, LazyVim adds a custom option to cmp,
+    -- To better deal with this, LazyLsp adds a custom option to cmp,
     -- that you can configure. For example:
     --
     -- ```lua
@@ -34,9 +34,9 @@ return {
           ["<C-b>"] = cmp.mapping.scroll_docs(-4),
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
           ["<C-Space>"] = cmp.mapping.complete(),
-          ["<CR>"] = LazyVim.cmp.confirm({ select = auto_select }),
-          ["<C-y>"] = LazyVim.cmp.confirm({ select = true }),
-          ["<S-CR>"] = LazyVim.cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+          ["<CR>"] = LazyLsp.cmp.confirm({ select = auto_select }),
+          ["<C-y>"] = LazyLsp.cmp.confirm({ select = true }),
+          ["<S-CR>"] = LazyLsp.cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
           ["<C-CR>"] = function(fallback)
             cmp.abort()
             fallback()
@@ -50,7 +50,7 @@ return {
         }),
         formatting = {
           format = function(entry, item)
-            local icons = LazyVim.config.icons.kinds
+            local icons = LazyLsp.config.icons.kinds
             if icons[item.kind] then
               item.kind = icons[item.kind] .. item.kind
             end
@@ -95,10 +95,10 @@ return {
     opts = function(_, opts)
       opts.snippet = {
         expand = function(item)
-          return LazyVim.cmp.expand(item.body)
+          return LazyLsp.cmp.expand(item.body)
         end,
       }
-      if LazyVim.has("nvim-snippets") then
+      if LazyLsp.has("nvim-snippets") then
         table.insert(opts.sources, { name = "snippets" })
       end
     end,
@@ -131,8 +131,8 @@ return {
     opts = {
       library = {
         { path = "luvit-meta/library", words = { "vim%.uv" } },
-        { path = "LazyVim", words = { "LazyVim" } },
-        { path = "lazy.nvim", words = { "LazyVim" } },
+        { path = "LazyLsp", words = { "LazyLsp" } },
+        { path = "lazy.nvim", words = { "LazyLsp" } },
       },
     },
   },

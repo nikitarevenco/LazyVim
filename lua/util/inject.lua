@@ -1,4 +1,4 @@
----@class lazyvim.util.inject
+---@class lazylsp.util.inject
 local M = {}
 
 ---@generic A: any
@@ -44,7 +44,7 @@ function M.set_upvalue(func, name, value)
     end
     i = i + 1
   end
-  LazyVim.error("upvalue not found: " .. name)
+  LazyLsp.error("upvalue not found: " .. name)
 end
 
 return M

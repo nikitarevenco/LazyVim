@@ -1,6 +1,6 @@
 return {
   recommended = function()
-    return LazyVim.extras.wants({
+    return LazyLsp.extras.wants({
       ft = { "tex", "plaintex", "bib" },
       root = { ".latexmkrc", ".texlabroot", "texlabroot", "Tectonic.toml" },
     })

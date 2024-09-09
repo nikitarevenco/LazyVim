@@ -25,7 +25,7 @@ setmetatable(M, {
     if dep then
       local mod = type(dep) == "table" and dep[1] or dep
       local key = type(dep) == "table" and dep[2] or k
-      M.deprecate([[LazyVim.]] .. k, [[LazyVim.]] .. mod .. "." .. key)
+      M.deprecate([[LazyLsp.]] .. k, [[LazyLsp.]] .. mod .. "." .. key)
       ---@diagnostic disable-next-line: no-unknown
       t[mod] = require("util." .. mod) -- load here to prevent loops
       return t[mod][key]
@@ -60,8 +60,8 @@ end
 
 ---@param extra string
 function M.has_extra(extra)
-  local Config = require("lazyvim")
-  local modname = "lazyvim.plugins.extras." .. extra
+  local Config = require("lazylsp")
+  local modname = "lazylsp.plugins.extras." .. extra
   return vim.tbl_contains(require("lazy.core.config").spec.modules, modname)
     or vim.tbl_contains(Config.json.data.extras, modname)
 end
@@ -109,7 +109,7 @@ end
 
 function M.deprecate(old, new)
   M.warn(("`%s` is deprecated. Please use `%s` instead"):format(old, new), {
-    title = "LazyVim",
+    title = "LazyLsp",
     once = true,
     stacktrace = true,
     stacklevel = 6,
@@ -248,7 +248,7 @@ end
 for _, level in ipairs({ "info", "warn", "error" }) do
   M[level] = function(msg, opts)
     opts = opts or {}
-    opts.title = opts.title or "LazyVim"
+    opts.title = opts.title or "LazyLsp"
     return LazyUtil[level](msg, opts)
   end
 end

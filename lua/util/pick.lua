@@ -1,12 +1,12 @@
----@class lazyvim.util.pick
----@overload fun(command:string, opts?:lazyvim.util.pick.Opts): fun()
+---@class lazylsp.util.pick
+---@overload fun(command:string, opts?:lazylsp.util.pick.Opts): fun()
 local M = setmetatable({}, {
   __call = function(m, ...)
     return m.wrap(...)
   end,
 })
 
----@class lazyvim.util.pick.Opts: table<string, any>
+---@class lazylsp.util.pick.Opts: table<string, any>
 ---@field root? boolean
 ---@field cwd? string
 ---@field buf? number
@@ -14,7 +14,7 @@ local M = setmetatable({}, {
 
 ---@class LazyPicker
 ---@field name string
----@field open fun(command:string, opts?:lazyvim.util.pick.Opts)
+---@field open fun(command:string, opts?:lazylsp.util.pick.Opts)
 ---@field commands table<string, string>
 
 ---@type LazyPicker?
@@ -33,8 +33,8 @@ function M.register(picker)
   end
 
   if M.picker and M.picker.name ~= picker.name then
-    LazyVim.warn(
-      "`LazyVim.pick`: picker already set to `" .. M.picker.name .. "`,\nignoring new picker `" .. picker.name .. "`"
+    LazyLsp.warn(
+      "`LazyLsp.pick`: picker already set to `" .. M.picker.name .. "`,\nignoring new picker `" .. picker.name .. "`"
     )
     return false
   end
@@ -43,18 +43,18 @@ function M.register(picker)
 end
 
 function M.want()
-  vim.g.lazyvim_picker = vim.g.lazyvim_picker or "auto"
-  if vim.g.lazyvim_picker == "auto" then
-    return LazyVim.has_extra("editor.fzf") and "fzf" or "telescope"
+  vim.g.lazylsp_picker = vim.g.lazylsp_picker or "auto"
+  if vim.g.lazylsp_picker == "auto" then
+    return LazyLsp.has_extra("editor.fzf") and "fzf" or "telescope"
   end
-  return vim.g.lazyvim_picker
+  return vim.g.lazylsp_picker
 end
 
 ---@param command? string
----@param opts? lazyvim.util.pick.Opts
+---@param opts? lazylsp.util.pick.Opts
 function M.open(command, opts)
   if not M.picker then
-    return LazyVim.error("LazyVim.pick: picker not set")
+    return LazyLsp.error("LazyLsp.pick: picker not set")
   end
 
   command = command ~= "auto" and command or "files"
@@ -63,12 +63,12 @@ function M.open(command, opts)
   opts = vim.deepcopy(opts)
 
   if type(opts.cwd) == "boolean" then
-    LazyVim.warn("LazyVim.pick: opts.cwd should be a string or nil")
+    LazyLsp.warn("LazyLsp.pick: opts.cwd should be a string or nil")
     opts.cwd = nil
   end
 
   if not opts.cwd and opts.root ~= false then
-    opts.cwd = LazyVim.root({ buf = opts.buf })
+    opts.cwd = LazyLsp.root({ buf = opts.buf })
   end
 
   command = M.picker.commands[command] or command
@@ -76,11 +76,11 @@ function M.open(command, opts)
 end
 
 ---@param command? string
----@param opts? lazyvim.util.pick.Opts
+---@param opts? lazylsp.util.pick.Opts
 function M.wrap(command, opts)
   opts = opts or {}
   return function()
-    LazyVim.pick.open(command, vim.deepcopy(opts))
+    LazyLsp.pick.open(command, vim.deepcopy(opts))
   end
 end
 

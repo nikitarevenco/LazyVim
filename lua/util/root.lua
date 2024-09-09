@@ -1,4 +1,4 @@
----@class lazyvim.util.root
+---@class lazylsp.util.root
 ---@overload fun(): string
 local M = setmetatable({}, {
   __call = function(m)
@@ -29,7 +29,7 @@ function M.detectors.lsp(buf)
     return {}
   end
   local roots = {} ---@type string[]
-  for _, client in pairs(LazyVim.lsp.get_clients({ bufnr = buf })) do
+  for _, client in pairs(LazyLsp.lsp.get_clients({ bufnr = buf })) do
     local workspace = client.config.workspace_folders
     for _, ws in pairs(workspace or {}) do
       roots[#roots + 1] = vim.uri_to_fname(ws.uri)
@@ -39,7 +39,7 @@ function M.detectors.lsp(buf)
     end
   end
   return vim.tbl_filter(function(path)
-    path = LazyVim.norm(path)
+    path = LazyLsp.norm(path)
     return path and bufpath:find(path, 1, true) == 1
   end, roots)
 end
@@ -75,7 +75,7 @@ function M.realpath(path)
     return nil
   end
   path = vim.uv.fs_realpath(path) or path
-  return LazyVim.norm(path)
+  return LazyLsp.norm(path)
 end
 
 ---@param spec LazyRootSpec
@@ -141,7 +141,7 @@ function M.info()
   lines[#lines + 1] = "```lua"
   lines[#lines + 1] = "vim.g.root_spec = " .. vim.inspect(spec)
   lines[#lines + 1] = "```"
-  LazyVim.info(lines, { title = "LazyVim Roots" })
+  LazyLsp.info(lines, { title = "LazyLsp Roots" })
   return roots[1] and roots[1].paths[1] or vim.uv.cwd()
 end
 
@@ -150,14 +150,14 @@ M.cache = {}
 
 function M.setup()
   vim.api.nvim_create_user_command("LazyRoot", function()
-    LazyVim.root.info()
-  end, { desc = "LazyVim roots for the current buffer" })
+    LazyLsp.root.info()
+  end, { desc = "LazyLsp roots for the current buffer" })
 
   -- FIX: doesn't properly clear cache in neo-tree `set_root` (which should happen presumably on `DirChanged`),
   -- probably because the event is triggered in the neo-tree buffer, therefore add `BufEnter`
   -- Maybe this is too frequent on `BufEnter` and something else should be done instead??
   vim.api.nvim_create_autocmd({ "LspAttach", "BufWritePost", "DirChanged", "BufEnter" }, {
-    group = vim.api.nvim_create_augroup("lazyvim_root_cache", { clear = true }),
+    group = vim.api.nvim_create_augroup("lazylsp_root_cache", { clear = true }),
     callback = function(event)
       M.cache[event.buf] = nil
     end,
@@ -183,7 +183,7 @@ function M.get(opts)
   if opts and opts.normalize then
     return ret
   end
-  return LazyVim.is_win() and ret:gsub("/", "\\") or ret
+  return LazyLsp.is_win() and ret:gsub("/", "\\") or ret
 end
 
 function M.git()

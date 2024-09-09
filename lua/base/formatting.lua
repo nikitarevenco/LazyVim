@@ -4,15 +4,15 @@ local M = {}
 function M.setup(_, opts)
   for _, key in ipairs({ "format_on_save", "format_after_save" }) do
     if opts[key] then
-      local msg = "Don't set `opts.%s` for `conform.nvim`.\n**LazyVim** will use the conform formatter automatically"
-      LazyVim.warn(msg:format(key))
+      local msg = "Don't set `opts.%s` for `conform.nvim`.\n**LazyLsp** will use the conform formatter automatically"
+      LazyLsp.warn(msg:format(key))
       ---@diagnostic disable-next-line: no-unknown
       opts[key] = nil
     end
   end
   ---@diagnostic disable-next-line: undefined-field
   if opts.format then
-    LazyVim.warn("**conform.nvim** `opts.format` is deprecated. Please use `opts.default_format_opts` instead.")
+    LazyLsp.warn("**conform.nvim** `opts.format` is deprecated. Please use `opts.default_format_opts` instead.")
   end
   require("conform").setup(opts)
 end
@@ -35,8 +35,8 @@ return {
     },
     init = function()
       -- Install the conform formatter on VeryLazy
-      LazyVim.on_very_lazy(function()
-        LazyVim.format.register({
+      LazyLsp.on_very_lazy(function()
+        LazyLsp.format.register({
           name = "conform.nvim",
           priority = 100,
           primary = true,
@@ -56,11 +56,11 @@ return {
     opts = function()
       local plugin = require("lazy.core.config").plugins["conform.nvim"]
       if plugin.config ~= M.setup then
-        LazyVim.error({
+        LazyLsp.error({
           "Don't set `plugin.config` for `conform.nvim`.\n",
-          "This will break **LazyVim** formatting.\n",
-          "Please refer to the docs at https://www.lazyvim.org/plugins/formatting",
-        }, { title = "LazyVim" })
+          "This will break **LazyLsp** formatting.\n",
+          "Please refer to the docs at https://www.lazylsp.org/plugins/formatting",
+        }, { title = "LazyLsp" })
       end
       ---@type conform.setupOpts
       local opts = {

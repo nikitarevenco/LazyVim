@@ -1,6 +1,6 @@
 return {
   recommended = function()
-    return LazyVim.extras.wants({
+    return LazyLsp.extras.wants({
       ft = "kotlin",
       root = {
         "settings.gradle", -- Gradle (multi-project)

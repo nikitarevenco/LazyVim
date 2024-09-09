@@ -1,6 +1,6 @@
 return {
   recommended = function()
-    return LazyVim.extras.wants({
+    return LazyLsp.extras.wants({
       root = {
         "angular.json",
         "nx.json", --support for nx workspace
@@ -35,7 +35,7 @@ return {
       },
       setup = {
         angularls = function()
-          LazyVim.lsp.on_attach(function(client)
+          LazyLsp.lsp.on_attach(function(client)
             --HACK: disable angular renaming capability due to duplicate rename popping up
             client.server_capabilities.renameProvider = false
           end, "angularls")
@@ -48,10 +48,10 @@ return {
   {
     "neovim/nvim-lspconfig",
     opts = function(_, opts)
-      LazyVim.extend(opts.servers.vtsls, "settings.vtsls.tsserver.globalPlugins", {
+      LazyLsp.extend(opts.servers.vtsls, "settings.vtsls.tsserver.globalPlugins", {
         {
           name = "@angular/language-server",
-          location = LazyVim.get_pkg_path("angular-language-server", "/node_modules/@angular/language-server"),
+          location = LazyLsp.get_pkg_path("angular-language-server", "/node_modules/@angular/language-server"),
           enableForWorkspaceTypeScriptVersions = false,
         },
       })

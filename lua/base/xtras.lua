@@ -49,7 +49,7 @@ local languages = {
   "lang.yaml",
 }
 
-LazyVim.plugin.save_core()
+LazyLsp.plugin.save_core()
 
 table.sort(languages, function(a, b)
   local pa = priorities[a] or 50

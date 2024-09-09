@@ -1,4 +1,4 @@
-if lazyvim_docs then
+if lazylsp_docs then
   -- The setup below will automatically configure connections without the need for manual input each time.
 
   -- Example configuration using dictionary with keys:
@@ -30,7 +30,7 @@ local sql_ft = { "sql", "mysql", "plsql" }
 
 return {
   recommended = function()
-    return LazyVim.extras.wants({
+    return LazyLsp.extras.wants({
       ft = sql_ft,
     })
   end,

@@ -1,4 +1,4 @@
----@class lazyvim.util.ui
+---@class lazylsp.util.ui
 local M = {}
 
 ---@alias Sign {name:string, text:string, texthl:string, priority:number}
@@ -78,7 +78,7 @@ function M.foldtext()
   if not ret or type(ret) == "string" then
     ret = { { vim.api.nvim_buf_get_lines(0, vim.v.lnum - 1, vim.v.lnum, false)[1], {} } }
   end
-  table.insert(ret, { " " .. LazyVim.config.icons.misc.dots })
+  table.insert(ret, { " " .. LazyLsp.config.icons.misc.dots })
 
   if not vim.treesitter.foldtext then
     return table.concat(
@@ -99,8 +99,8 @@ function M.statuscolumn()
 
   local components = { "", "", "" } -- left, middle, right
 
-  local show_open_folds = vim.g.lazyvim_statuscolumn and vim.g.lazyvim_statuscolumn.folds_open
-  local use_githl = vim.g.lazyvim_statuscolumn and vim.g.lazyvim_statuscolumn.folds_githl
+  local show_open_folds = vim.g.lazylsp_statuscolumn and vim.g.lazylsp_statuscolumn.folds_open
+  local use_githl = vim.g.lazylsp_statuscolumn and vim.g.lazylsp_statuscolumn.folds_githl
 
   if show_signs then
     local signs = M.get_signs(buf, vim.v.lnum)
@@ -123,7 +123,7 @@ function M.statuscolumn()
         fold = { text = vim.opt.fillchars:get().foldclose or "", texthl = githl or "Folded" }
       elseif
         show_open_folds
-        and not LazyVim.ui.skip_foldexpr[buf]
+        and not LazyLsp.ui.skip_foldexpr[buf]
         and tostring(vim.treesitter.foldexpr(vim.v.lnum)):sub(1, 1) == ">"
       then -- fold start
         fold = { text = vim.opt.fillchars:get().foldopen or "", texthl = githl }

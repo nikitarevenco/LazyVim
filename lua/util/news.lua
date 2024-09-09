@@ -1,4 +1,4 @@
----@class lazyvim.util.news
+---@class lazylsp.util.news
 local M = {}
 
 function M.hash(file)
@@ -11,28 +11,28 @@ end
 
 function M.setup()
   vim.schedule(function()
-    if LazyVim.config.news.lazyvim then
-      if not LazyVim.config.json.data.news["NEWS.md"] then
+    if LazyLsp.config.news.lazylsp then
+      if not LazyLsp.config.json.data.news["NEWS.md"] then
         M.welcome()
       end
-      M.lazyvim(true)
+      M.lazylsp(true)
     end
-    if LazyVim.config.news.neovim then
+    if LazyLsp.config.news.neovim then
       M.neovim(true)
     end
   end)
 end
 
 function M.welcome()
-  LazyVim.info("Welcome to LazyVim!")
+  LazyLsp.info("Welcome to LazyLsp!")
 end
 
 function M.changelog()
-  M.open("CHANGELOG.md", { plugin = "LazyVim" })
+  M.open("CHANGELOG.md", { plugin = "LazyLsp" })
 end
 
-function M.lazyvim(when_changed)
-  M.open("NEWS.md", { plugin = "LazyVim", when_changed = when_changed })
+function M.lazylsp(when_changed)
+  M.open("NEWS.md", { plugin = "LazyLsp", when_changed = when_changed })
 end
 
 function M.neovim(when_changed)
@@ -47,7 +47,7 @@ function M.open(file, opts)
   if opts.plugin then
     local plugin = require("lazy.core.config").plugins[opts.plugin] --[[@as LazyPlugin?]]
     if not plugin then
-      return LazyVim.error("plugin not found: " .. opts.plugin)
+      return LazyLsp.error("plugin not found: " .. opts.plugin)
     end
     file = plugin.dir .. "/" .. file
   elseif opts.rtp then
@@ -55,17 +55,17 @@ function M.open(file, opts)
   end
 
   if not file then
-    return LazyVim.error("File not found")
+    return LazyLsp.error("File not found")
   end
 
   if opts.when_changed then
-    local is_new = not LazyVim.config.json.data.news[ref]
+    local is_new = not LazyLsp.config.json.data.news[ref]
     local hash = M.hash(file)
-    if hash == LazyVim.config.json.data.news[ref] then
+    if hash == LazyLsp.config.json.data.news[ref] then
       return
     end
-    LazyVim.config.json.data.news[ref] = hash
-    LazyVim.json.save()
+    LazyLsp.config.json.data.news[ref] = hash
+    LazyLsp.json.save()
     -- don't open if file has never been opened
     if is_new then
       return

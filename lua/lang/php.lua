@@ -1,10 +1,10 @@
-if lazyvim_docs then
+if lazylsp_docs then
   -- LSP Server to use for PHP.
   -- Set to "intelephense" to use intelephense instead of phpactor.
-  vim.g.lazyvim_php_lsp = "intelephense"
+  vim.g.lazylsp_php_lsp = "intelephense"
 end
 
-local lsp = vim.g.lazyvim_php_lsp or "phpactor"
+local lsp = vim.g.lazylsp_php_lsp or "phpactor"
 
 return {
   recommended = {

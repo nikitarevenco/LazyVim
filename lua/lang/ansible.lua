@@ -1,6 +1,6 @@
 return {
   recommended = function()
-    return LazyVim.extras.wants({
+    return LazyLsp.extras.wants({
       ft = "yaml.ansible",
       root = { "ansible.cfg", ".ansible-lint" },
     })

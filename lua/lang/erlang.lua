@@ -1,6 +1,6 @@
 return {
   recommended = function()
-    return LazyVim.extras.wants({
+    return LazyLsp.extras.wants({
       ft = { "erlang" },
       root = { "rebar.config", "erlang.mk" },
     })

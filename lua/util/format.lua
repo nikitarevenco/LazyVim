@@ -1,4 +1,4 @@
----@class lazyvim.util.format
+---@class lazylsp.util.format
 ---@overload fun(opts?: {force?:boolean})
 local M = setmetatable({}, {
   __call = function(m, ...)
@@ -24,7 +24,7 @@ function M.register(formatter)
 end
 
 function M.formatexpr()
-  if LazyVim.has("conform.nvim") then
+  if LazyLsp.has("conform.nvim") then
     return require("conform").formatexpr()
   end
   return vim.lsp.formatexpr({ timeout_ms = 3000 })
@@ -74,7 +74,7 @@ function M.info(buf)
   if not have then
     lines[#lines + 1] = "\n***No formatters available for this buffer.***"
   end
-  LazyVim[enabled and "info" or "warn"](
+  LazyLsp[enabled and "info" or "warn"](
     table.concat(lines, "\n"),
     { title = "LazyFormat (" .. (enabled and "enabled" or "disabled") .. ")" }
   )
@@ -127,27 +127,27 @@ function M.format(opts)
   for _, formatter in ipairs(M.resolve(buf)) do
     if formatter.active then
       done = true
-      LazyVim.try(function()
+      LazyLsp.try(function()
         return formatter.format(buf)
       end, { msg = "Formatter `" .. formatter.name .. "` failed" })
     end
   end
 
   if not done and opts and opts.force then
-    LazyVim.warn("No formatter available", { title = "LazyVim" })
+    LazyLsp.warn("No formatter available", { title = "LazyLsp" })
   end
 end
 
 function M.health()
   local Config = require("lazy.core.config")
   local has_plugin = Config.spec.plugins["none-ls.nvim"]
-  local has_extra = vim.tbl_contains(Config.spec.modules, "lazyvim.plugins.extras.lsp.none-ls")
+  local has_extra = vim.tbl_contains(Config.spec.modules, "lazylsp.plugins.extras.lsp.none-ls")
   if has_plugin and not has_extra then
-    LazyVim.warn({
-      "`conform.nvim` and `nvim-lint` are now the default formatters and linters in LazyVim.",
+    LazyLsp.warn({
+      "`conform.nvim` and `nvim-lint` are now the default formatters and linters in LazyLsp.",
       "",
       "You can use those plugins together with `none-ls.nvim`,",
-      "but you need to enable the `lazyvim.plugins.extras.lsp.none-ls` extra,",
+      "but you need to enable the `lazylsp.plugins.extras.lsp.none-ls` extra,",
       "for formatting to work correctly.",
       "",
       "In case you no longer want to use `none-ls.nvim`, just remove the spec from your config.",

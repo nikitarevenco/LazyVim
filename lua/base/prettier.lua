@@ -1,8 +1,8 @@
 ---@diagnostic disable: inject-field
-if lazyvim_docs then
+if lazylsp_docs then
   -- Enable the option to require a Prettier config file
   -- If no prettier config file is found, the formatter will not be used
-  vim.g.lazyvim_prettier_needs_config = false
+  vim.g.lazylsp_prettier_needs_config = false
 end
 
 ---@alias ConformCtx {buf: number, filename: string, dirname: string}
@@ -53,8 +53,8 @@ function M.has_parser(ctx)
   return ok and parser and parser ~= vim.NIL
 end
 
-M.has_config = LazyVim.memoize(M.has_config)
-M.has_parser = LazyVim.memoize(M.has_parser)
+M.has_config = LazyLsp.memoize(M.has_config)
+M.has_parser = LazyLsp.memoize(M.has_parser)
 
 return {
   {
@@ -76,7 +76,7 @@ return {
       opts.formatters = opts.formatters or {}
       opts.formatters.prettier = {
         condition = function(_, ctx)
-          return M.has_parser(ctx) and (vim.g.lazyvim_prettier_needs_config ~= true or M.has_config(ctx))
+          return M.has_parser(ctx) and (vim.g.lazylsp_prettier_needs_config ~= true or M.has_config(ctx))
         end,
       }
     end,

@@ -1,17 +1,17 @@
-if lazyvim_docs then
+if lazylsp_docs then
   -- LSP Server to use for Python.
   -- Set to "basedpyright" to use basedpyright instead of pyright.
-  vim.g.lazyvim_python_lsp = "pyright"
+  vim.g.lazylsp_python_lsp = "pyright"
   -- Set to "ruff_lsp" to use the old LSP implementation version.
-  vim.g.lazyvim_python_ruff = "ruff"
+  vim.g.lazylsp_python_ruff = "ruff"
 end
 
-local lsp = vim.g.lazyvim_python_lsp or "pyright"
-local ruff = vim.g.lazyvim_python_ruff or "ruff"
+local lsp = vim.g.lazylsp_python_lsp or "pyright"
+local ruff = vim.g.lazylsp_python_ruff or "ruff"
 
 return {
   recommended = function()
-    return LazyVim.extras.wants({
+    return LazyLsp.extras.wants({
       ft = "python",
       root = {
         "pyproject.toml",
@@ -41,7 +41,7 @@ return {
           keys = {
             {
               "<leader>co",
-              LazyVim.lsp.action["source.organizeImports"],
+              LazyLsp.lsp.action["source.organizeImports"],
               desc = "Organize Imports",
             },
           },
@@ -50,7 +50,7 @@ return {
           keys = {
             {
               "<leader>co",
-              LazyVim.lsp.action["source.organizeImports"],
+              LazyLsp.lsp.action["source.organizeImports"],
               desc = "Organize Imports",
             },
           },
@@ -58,7 +58,7 @@ return {
       },
       setup = {
         [ruff] = function()
-          LazyVim.lsp.on_attach(function(client, _)
+          LazyLsp.lsp.on_attach(function(client, _)
             -- Disable hover in favor of Pyright
             client.server_capabilities.hoverProvider = false
           end, ruff)
@@ -104,9 +104,9 @@ return {
       },
       config = function()
         if vim.fn.has("win32") == 1 then
-          require("dap-python").setup(LazyVim.get_pkg_path("debugpy", "/venv/Scripts/pythonw.exe"))
+          require("dap-python").setup(LazyLsp.get_pkg_path("debugpy", "/venv/Scripts/pythonw.exe"))
         else
-          require("dap-python").setup(LazyVim.get_pkg_path("debugpy", "/venv/bin/python"))
+          require("dap-python").setup(LazyLsp.get_pkg_path("debugpy", "/venv/bin/python"))
         end
       end,
     },
@@ -117,7 +117,7 @@ return {
     branch = "regexp", -- Use this branch for the new version
     cmd = "VenvSelect",
     enabled = function()
-      return LazyVim.has("telescope.nvim")
+      return LazyLsp.has("telescope.nvim")
     end,
     opts = {
       settings = {

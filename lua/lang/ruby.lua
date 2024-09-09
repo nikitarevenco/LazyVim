@@ -1,20 +1,20 @@
-if lazyvim_docs then
+if lazylsp_docs then
   -- LSP Server to use for Ruby.
   -- Set to "solargraph" to use solargraph instead of ruby_lsp.
-  vim.g.lazyvim_ruby_lsp = "ruby_lsp"
-  vim.g.lazyvim_ruby_formatter = "rubocop"
+  vim.g.lazylsp_ruby_lsp = "ruby_lsp"
+  vim.g.lazylsp_ruby_formatter = "rubocop"
 end
 
-local lsp = vim.g.lazyvim_ruby_lsp or "ruby_lsp"
+local lsp = vim.g.lazylsp_ruby_lsp or "ruby_lsp"
 if vim.fn.has("nvim-0.10") == 0 then
   -- ruby_lsp does not work well with Neovim < 0.10
-  lsp = vim.g.lazyvim_ruby_lsp or "solargraph"
+  lsp = vim.g.lazylsp_ruby_lsp or "solargraph"
 end
-local formatter = vim.g.lazyvim_ruby_formatter or "rubocop"
+local formatter = vim.g.lazylsp_ruby_formatter or "rubocop"
 
 return {
   recommended = function()
-    return LazyVim.extras.wants({
+    return LazyLsp.extras.wants({
       ft = "ruby",
       root = "Gemfile",
     })

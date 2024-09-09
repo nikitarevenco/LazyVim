@@ -1,4 +1,4 @@
----@class lazyvim.util.mini
+---@class lazylsp.util.mini
 local M = {}
 
 ---@alias Mini.ai.loc {line:number, col:number}
@@ -121,7 +121,7 @@ end
 
 ---@param opts {skip_next: string, skip_ts: string[], skip_unbalanced: boolean, markdown: boolean}
 function M.pairs(opts)
-  LazyVim.toggle.map("<leader>up", {
+  LazyLsp.toggle.map("<leader>up", {
     name = "Mini Pairs",
     get = function()
       return not vim.g.minipairs_disable

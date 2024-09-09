@@ -1,4 +1,4 @@
----@class lazyvim.util.lualine
+---@class lazylsp.util.lualine
 local M = {}
 
 function M.cmp_source(name, icon)
@@ -23,14 +23,14 @@ function M.cmp_source(name, icon)
   end
 
   local colors = {
-    ok = LazyVim.ui.fg("Special"),
-    error = LazyVim.ui.fg("DiagnosticError"),
-    pending = LazyVim.ui.fg("DiagnosticWarn"),
+    ok = LazyLsp.ui.fg("Special"),
+    error = LazyLsp.ui.fg("DiagnosticError"),
+    pending = LazyLsp.ui.fg("DiagnosticWarn"),
   }
 
   return {
     function()
-      return icon or LazyVim.config.icons.kinds[name:sub(1, 1):upper() .. name:sub(2)]
+      return icon or LazyLsp.config.icons.kinds[name:sub(1, 1):upper() .. name:sub(2)]
     end,
     cond = function()
       return status() ~= nil
@@ -91,8 +91,8 @@ function M.pretty_path(opts)
       return ""
     end
 
-    local root = LazyVim.root.get({ normalize = true })
-    local cwd = LazyVim.root.cwd()
+    local root = LazyLsp.root.get({ normalize = true })
+    local cwd = LazyLsp.root.cwd()
 
     if opts.relative == "cwd" and path:find(cwd, 1, true) == 1 then
       path = path:sub(#cwd + 2)
@@ -138,12 +138,12 @@ function M.root_dir(opts)
     parent = true,
     other = true,
     icon = "󱉭 ",
-    color = LazyVim.ui.fg("Special"),
+    color = LazyLsp.ui.fg("Special"),
   }, opts or {})
 
   local function get()
-    local cwd = LazyVim.root.cwd()
-    local root = LazyVim.root.get({ normalize = true })
+    local cwd = LazyLsp.root.cwd()
+    local root = LazyLsp.root.get({ normalize = true })
     local name = vim.fs.basename(root)
 
     if root == cwd then

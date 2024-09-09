@@ -1,26 +1,26 @@
 vim.uv = vim.uv or vim.loop
 
-_G.LazyVim = require("util")
+_G.LazyLsp = require("util")
 
----@class LazyVimConfig: LazyVimOptions
+---@class LazyLspConfig: LazyLspOptions
 local M = {}
 
 M.version = "12.38.2" -- x-release-please-version
-LazyVim.config = M
+LazyLsp.config = M
 
----@class LazyVimOptions
+---@class LazyLspOptions
 local defaults = {
   -- load the default settings
   defaults = {
     autocmds = false, -- l.azyvim.config.autocmds
     keymaps = false, -- l.azyvim.config.keymaps
-    -- l.azyvim.config.options can't be configured here since that's loaded before lazyvim setup
+    -- l.azyvim.config.options can't be configured here since that's loaded before lazylsp setup
     -- if you want to disable loading options, add `package.loaded["l.azyvim.config.options"] = true` to the top of your init.lua
   },
   news = {
     -- When enabled, NEWS.md will be shown when changed.
     -- This only contains big new features and breaking changes.
-    lazyvim = true,
+    lazylsp = true,
     -- Same but for Neovim's news.txt
     neovim = false,
   },
@@ -133,7 +133,7 @@ local defaults = {
 
 M.json = {
   version = 6,
-  path = vim.g.lazyvim_json or vim.fn.stdpath("config") .. "/lazyvim.json",
+  path = vim.g.lazylsp_json or vim.fn.stdpath("config") .. "/lazylsp.json",
   data = {
     version = nil, ---@type string?
     news = {}, ---@type table<string, string>
@@ -150,17 +150,17 @@ function M.json.load()
     if ok then
       M.json.data = vim.tbl_deep_extend("force", M.json.data, json or {})
       if M.json.data.version ~= M.json.version then
-        LazyVim.json.migrate()
+        LazyLsp.json.migrate()
       end
     end
   end
 end
 
----@type LazyVimOptions
+---@type LazyLspOptions
 local options
 local lazy_clipboard
 
----@param opts? LazyVimOptions
+---@param opts? LazyLspOptions
 function M.setup(opts)
   options = vim.tbl_deep_extend("force", defaults, opts or {}) or {}
 
@@ -170,7 +170,7 @@ function M.setup(opts)
     M.load("autocmds")
   end
 
-  local group = vim.api.nvim_create_augroup("LazyVim", { clear = true })
+  local group = vim.api.nvim_create_augroup("LazyLsp", { clear = true })
   vim.api.nvim_create_autocmd("User", {
     group = group,
     pattern = "VeryLazy",
@@ -183,13 +183,13 @@ function M.setup(opts)
         vim.opt.clipboard = lazy_clipboard
       end
 
-      LazyVim.format.setup()
-      LazyVim.news.setup()
-      LazyVim.root.setup()
+      LazyLsp.format.setup()
+      LazyLsp.news.setup()
+      LazyLsp.root.setup()
 
       vim.api.nvim_create_user_command("LazyExtras", function()
-        LazyVim.extras.show()
-      end, { desc = "Manage LazyVim extras" })
+        LazyLsp.extras.show()
+      end, { desc = "Manage LazyLsp extras" })
 
       vim.api.nvim_create_user_command("LazyHealth", function()
         vim.cmd([[Lazy! load all]])
@@ -205,8 +205,8 @@ function M.setup(opts)
     end,
   })
 
-  LazyVim.track("colorscheme")
-  LazyVim.try(function()
+  LazyLsp.track("colorscheme")
+  LazyLsp.try(function()
     if type(M.colorscheme) == "function" then
       M.colorscheme()
     else
@@ -215,11 +215,11 @@ function M.setup(opts)
   end, {
     msg = "Could not load your colorscheme",
     on_error = function(msg)
-      LazyVim.error(msg)
+      LazyLsp.error(msg)
       vim.cmd.colorscheme("habamax")
     end,
   })
-  LazyVim.track()
+  LazyLsp.track()
 end
 
 ---@param buf? number
@@ -244,20 +244,20 @@ end
 function M.load(name)
   local function _load(mod)
     if require("lazy.core.cache").find(mod)[1] then
-      LazyVim.try(function()
+      LazyLsp.try(function()
         require(mod)
       end, { msg = "Failed loading " .. mod })
     end
   end
-  local pattern = "LazyVim" .. name:sub(1, 1):upper() .. name:sub(2)
-  -- always load lazyvim, then user file
+  local pattern = "LazyLsp" .. name:sub(1, 1):upper() .. name:sub(2)
+  -- always load lazylsp, then user file
   if M.defaults[name] or name == "options" then
-    _load("lazyvim." .. name)
+    _load("lazylsp." .. name)
     vim.api.nvim_exec_autocmds("User", { pattern = pattern .. "Defaults", modeline = false })
   end
   _load("config." .. name)
   if vim.bo.filetype == "lazy" then
-    -- HACK: LazyVim may have overwritten options of the Lazy ui, so reset this here
+    -- HACK: LazyLsp may have overwritten options of the Lazy ui, so reset this here
     vim.cmd([[do VimResized]])
   end
   vim.api.nvim_exec_autocmds("User", { pattern = pattern, modeline = false })
@@ -269,18 +269,18 @@ function M.init()
     return
   end
   M.did_init = true
-  local plugin = require("lazy.core.config").spec.plugins.LazyVim
+  local plugin = require("lazy.core.config").spec.plugins.LazyLsp
   if plugin then
     vim.opt.rtp:append(plugin.dir)
   end
 
-  package.preload["lazyvim.plugins.lsp.format"] = function()
-    LazyVim.deprecate([[require("lazyvim.plugins.lsp.format")]], [[LazyVim.format]])
-    return LazyVim.format
+  package.preload["base.formatting"] = function()
+    LazyLsp.deprecate([[require("base.formatting")]], [[LazyLsp.format]])
+    return LazyLsp.format
   end
 
   -- delay notifications till vim.notify was replaced or after 500ms
-  LazyVim.lazy_notify()
+  LazyLsp.lazy_notify()
 
   -- load options here, before lazy init while sourcing plugin modules
   -- this is needed to make sure options will be correctly applied
@@ -294,7 +294,7 @@ function M.init()
     vim.deprecate = function() end
   end
 
-  LazyVim.plugin.setup()
+  LazyLsp.plugin.setup()
   M.json.load()
 end
 
@@ -303,7 +303,7 @@ setmetatable(M, {
     if options == nil then
       return vim.deepcopy(defaults)[key]
     end
-    ---@cast options LazyVimConfig
+    ---@cast options LazyLspConfig
     return options[key]
   end,
 })

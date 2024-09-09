@@ -1,48 +1,48 @@
----@class lazyvim.util.toggle
+---@class lazylsp.util.toggle
 local M = {}
 
----@class lazyvim.Toggle
+---@class lazylsp.Toggle
 ---@field name string
 ---@field get fun():boolean
 ---@field set fun(state:boolean)
 
----@class lazyvim.Toggle.wrap: lazyvim.Toggle
+---@class lazylsp.Toggle.wrap: lazylsp.Toggle
 ---@operator call:boolean
 
----@param toggle lazyvim.Toggle
+---@param toggle lazylsp.Toggle
 function M.wrap(toggle)
   return setmetatable(toggle, {
     __call = function()
       toggle.set(not toggle.get())
       local state = toggle.get()
       if state then
-        LazyVim.info("Enabled " .. toggle.name, { title = toggle.name })
+        LazyLsp.info("Enabled " .. toggle.name, { title = toggle.name })
       else
-        LazyVim.warn("Disabled " .. toggle.name, { title = toggle.name })
+        LazyLsp.warn("Disabled " .. toggle.name, { title = toggle.name })
       end
       return state
     end,
-  }) --[[@as lazyvim.Toggle.wrap]]
+  }) --[[@as lazylsp.Toggle.wrap]]
 end
 
 ---@param lhs string
----@param toggle lazyvim.Toggle
+---@param toggle lazylsp.Toggle
 function M.map(lhs, toggle)
   local t = M.wrap(toggle)
-  LazyVim.safe_keymap_set("n", lhs, function()
+  LazyLsp.safe_keymap_set("n", lhs, function()
     t()
   end, { desc = "Toggle " .. toggle.name })
   M.wk(lhs, toggle)
 end
 
 function M.wk(lhs, toggle)
-  if not LazyVim.has("which-key.nvim") then
+  if not LazyLsp.has("which-key.nvim") then
     return
   end
   local function safe_get()
     local ok, enabled = pcall(toggle.get)
     if not ok then
-      LazyVim.error({ "Failed to get toggle state for **" .. toggle.name .. "**:\n", enabled }, { once = true })
+      LazyLsp.error({ "Failed to get toggle state for **" .. toggle.name .. "**:\n", enabled }, { once = true })
     end
     return enabled
   end
@@ -81,10 +81,10 @@ function M.format(buf)
       if not buf then
         return vim.g.autoformat == nil or vim.g.autoformat
       end
-      return LazyVim.format.enabled()
+      return LazyLsp.format.enabled()
     end,
     set = function(state)
-      LazyVim.format.enable(state, buf)
+      LazyLsp.format.enable(state, buf)
     end,
   })
 end
@@ -181,7 +181,7 @@ M.maximize = M.wrap({
       -- `VimLeavePre` might be another consideration? Not sure about differences between the 2
       vim.api.nvim_create_autocmd("ExitPre", {
         once = true,
-        group = vim.api.nvim_create_augroup("lazyvim_restore_max_exit_pre", { clear = true }),
+        group = vim.api.nvim_create_augroup("lazylsp_restore_max_exit_pre", { clear = true }),
         desc = "Restore width/height when close Neovim while maximized",
         callback = function()
           M.maximize.set(false)

@@ -1,6 +1,6 @@
 return {
   recommended = function()
-    return LazyVim.extras.wants({
+    return LazyLsp.extras.wants({
       ft = "cmake",
       root = { "CMakePresets.json", "CTestConfig.cmake", "cmake" },
     })

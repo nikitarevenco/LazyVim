@@ -1,11 +1,11 @@
-LazyVim.on_very_lazy(function()
+LazyLsp.on_very_lazy(function()
   vim.filetype.add({
     extension = { mdx = "markdown.mdx" },
   })
 end)
 return {
   recommended = function()
-    return LazyVim.extras.wants({
+    return LazyLsp.extras.wants({
       ft = { "markdown", "markdown.mdx" },
       root = "README.md",
     })
@@ -109,7 +109,7 @@ return {
     ft = { "markdown", "norg", "rmd", "org" },
     config = function(_, opts)
       require("render-markdown").setup(opts)
-      LazyVim.toggle.map("<leader>um", {
+      LazyLsp.toggle.map("<leader>um", {
         name = "Render Markdown",
         get = function()
           return require("render-markdown.state").enabled
