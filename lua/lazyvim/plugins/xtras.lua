@@ -3,7 +3,7 @@ local prios = {
   ["lazyvim.plugins.extras.test.core"] = 1,
   ["lazyvim.plugins.extras.dap.core"] = 1,
   ["lazyvim.plugins.extras.ui.edgy"] = 2,
-  ["lazyvim.plugins.extras.lang.typescript"] = 5,
+  ["lang.typescript"] = 5,
   ["lazyvim.plugins.extras.formatting.prettier"] = 10,
   -- default priority is 50
   ["lazyvim.plugins.extras.editor.aerial"] = 100,
@@ -11,7 +11,49 @@ local prios = {
 }
 
 ---@type string[]
-local extras = LazyVim.dedup(LazyVim.config.json.data.extras)
+local extras = {
+  "lang.angular",
+  "lang.ansible",
+  "lang.astro",
+  "lang.clangd",
+  "lang.clojure",
+  "lang.cmake",
+  "lang.docker",
+  "lang.elixir",
+  "lang.elm",
+  -- "lang.erlang",
+  "lang.git",
+  "lang.gleam",
+  "lang.go",
+  -- "lang.haskell",
+  "lang.helm",
+  "lang.java",
+  "lang.json",
+  "lang.kotlin",
+  "lang.lean",
+  "lang.markdown",
+  "lang.nix",
+  "lang.nushell",
+  "lang.ocaml",
+  "lang.omnisharp",
+  "lang.php",
+  "lang.prisma",
+  "lang.python",
+  -- "lang.r",
+  "lang.ruby",
+  "lang.rust",
+  "lang.scala",
+  "lang.sql",
+  "lang.svelte",
+  "lang.tailwind",
+  "lang.terraform",
+  "lang.tex",
+  "lang.thrift",
+  "lang.toml",
+  "lang.typescript",
+  "lang.vue",
+  "lang.yaml",
+}
 
 local version = vim.version()
 local v = version.major .. "_" .. version.minor

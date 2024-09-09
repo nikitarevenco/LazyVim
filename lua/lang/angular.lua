@@ -24,7 +24,7 @@ return {
   },
 
   -- angularls depends on typescript
-  { import = "lazyvim.plugins.extras.lang.typescript" },
+  { import = "lang.typescript" },
 
   -- LSP Servers
   {
