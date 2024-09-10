@@ -143,50 +143,10 @@ function M.setup(opts)
     group = group,
     pattern = "VeryLazy",
     callback = function()
-      if lazy_autocmds then
-        M.load("autocmds")
-      end
-      M.load("keymaps")
-      if lazy_clipboard ~= nil then
-        vim.opt.clipboard = lazy_clipboard
-      end
-
       LazyLsp.format.setup()
       LazyLsp.root.setup()
-
-      vim.api.nvim_create_user_command("LazyExtras", function()
-        LazyLsp.extras.show()
-      end, { desc = "Manage LazyLsp extras" })
-
-      vim.api.nvim_create_user_command("LazyHealth", function()
-        vim.cmd([[Lazy! load all]])
-        vim.cmd([[checkhealth]])
-      end, { desc = "Load all plugins and run :checkhealth" })
-
-      local health = require("lazy.health")
-      vim.list_extend(health.valid, {
-        "recommended",
-        "desc",
-        "vscode",
-      })
     end,
   })
-
-  LazyLsp.track("colorscheme")
-  LazyLsp.try(function()
-    if type(M.colorscheme) == "function" then
-      M.colorscheme()
-    else
-      vim.cmd.colorscheme(M.colorscheme)
-    end
-  end, {
-    msg = "Could not load your colorscheme",
-    on_error = function(msg)
-      LazyLsp.error(msg)
-      vim.cmd.colorscheme("habamax")
-    end,
-  })
-  LazyLsp.track()
 end
 
 ---@param buf? number

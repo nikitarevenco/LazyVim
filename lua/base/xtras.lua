@@ -5,15 +5,18 @@ local priorities = {
   -- default priority is 50
 }
 
+-- Mason can't load
 -- "lang.erlang",
 -- "lang.haskell",
 -- "lang.ocaml",
 -- "lang.r",
 -- "lang.nix",
+-- Causes formatting issues
+-- "lang.svelte",
+-- "lang.astro",
 local languages = {
   "lang.angular",
   "lang.ansible",
-  "lang.astro",
   "lang.clangd",
   "lang.clojure",
   "lang.cmake",
@@ -38,7 +41,6 @@ local languages = {
   "lang.rust",
   "lang.scala",
   "lang.sql",
-  "lang.svelte",
   "lang.tailwind",
   "lang.terraform",
   "lang.tex",

@@ -38,12 +38,12 @@ function M.resolve(buf)
 	---@param formatter LazyFormatter
 	return vim.tbl_map(function(formatter)
 		local sources = formatter.sources(buf)
-		-- local active = #sources > 0 and (not formatter.primary or not have_primary)
-		-- have_primary = have_primary or (active and formatter.primary) or false
-		-- return setmetatable({
-		-- 	active = active,
-		-- 	resolved = sources,
-		-- }, { __index = formatter })
+		local active = #sources > 0 and (not formatter.primary or not have_primary)
+		have_primary = have_primary or (active and formatter.primary) or false
+		return setmetatable({
+			active = active,
+			resolved = sources,
+		}, { __index = formatter })
 	end, M.formatters)
 end
 
