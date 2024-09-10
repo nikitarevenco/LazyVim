@@ -16,7 +16,6 @@ return {
       { "nushell/tree-sitter-nu" },
     },
     opts = function(_, opts)
-      ---@diagnostic disable-next-line: inject-field
       require("nvim-treesitter.parsers").get_parser_configs().nu = {
         install_info = {
           url = "https://github.com/nushell/tree-sitter-nu",
