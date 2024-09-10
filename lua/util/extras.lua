@@ -123,7 +123,7 @@ function M.get_extra(source, modname)
     imports = imports,
     desc = require(modname).desc,
     recommended = recommended,
-    managed = vim.tbl_contains(LazyLsp.config.json.data.extras, modname) or not enabled,
+    managed = not enabled,
     plugins = plugins,
     optional = optional,
   }
