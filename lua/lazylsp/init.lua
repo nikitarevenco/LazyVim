@@ -260,8 +260,6 @@ function M.init()
   if vim.g.deprecation_warnings == false then
     vim.deprecate = function() end
   end
-
-  LazyLsp.plugin.setup()
 end
 
 setmetatable(M, {

@@ -263,10 +263,6 @@ function X:extra(extra)
       self:diagnostic({
         message = "Required by " .. table.concat(pp, ", "),
       })
-    elseif vim.tbl_contains(LazyLsp.plugin.core_imports, extra.module) then
-      self:diagnostic({
-        message = "This extra is included by default",
-      })
     else
       self:diagnostic({
         message = "Not managed by LazyExtras (config)",

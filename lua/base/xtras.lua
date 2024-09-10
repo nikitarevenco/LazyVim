@@ -49,8 +49,6 @@ local languages = {
   "lang.yaml",
 }
 
-LazyLsp.plugin.save_core()
-
 table.sort(languages, function(a, b)
   local pa = priorities[a] or 50
   local pb = priorities[b] or 50
